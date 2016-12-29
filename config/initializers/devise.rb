@@ -164,7 +164,7 @@ Devise.setup do |config|
   # ==> Configuration for :timeoutable
   # The time you want to timeout the user session without activity. After this
   # time the user will be asked for credentials again. Default is 30 minutes.
-  # config.timeout_in = 30.minutes
+  config.timeout_in = 5.minutes
 
   # ==> Configuration for :lockable
   # Defines which strategy will be used to lock an account.
@@ -283,7 +283,7 @@ Devise.setup do |config|
 
   # Change setting to how long to remember device before requiring another token. Change to nil to turn feature off.
   # To change the default, uncomment and change the below:
-  config.ga_remembertime = 1.minute
+  config.ga_remembertime = 5.minutes
 
   # Change setting to assign the application name used by code generator. Defaults to Rails.application.class.parent_name.
   # To change the default, uncomment and change the below:

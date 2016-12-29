@@ -1,0 +1,127 @@
+<h1>Secure Page</h1>
+
+<div class="page-header">
+  <h1>Basic Configuration <small></small></h1>
+</div>
+
+
+
+
+
+<h3>Devise Google Authenticator</h3>
+
+<p>This is a devise [https://github.com/plataformatec/devise] extension to allow your app to utilise Google Authenticator[http://code.google.com/p/google-authenticator/] for Time-based One Time Passwords (TOTP).</p>
+
+<h3>Installation</h3>
+
+<p>Add the gems below to your Gemfile</p>
+<div class="well well-sm">
+	<code>gem 'devise'</code>
+</div>
+<div class="well well-sm">
+	<code>gem 'devise_google_authenticator'</code>
+</div>
+
+Don't forget to <mark>bundle install</mark>
+
+<h3>Devise Installation</h3><p> (In case you haven't done it)</p>
+
+Before you can setup Devise Google Authenticator you need to setup Devise first, you need to do the following (but refer to https://github.com/plataformatec/devise for more information)
+
+<h3>Install Devise:</h3>
+<div class="well well-sm">
+	<code>rails g devise:install</code>
+</div>
+
+
+<h4>Setup the User or Admin model</h4>
+<div class="well well-sm">
+	<code>rails g devise MODEL</code>
+</div>
+
+<h4>Configure your app for authorization</h4>
+<p>Edit your controller that you want to be secured with devise, with the before_filter below, add to top of controller</p>
+
+<div class="well well-sm">
+	<code>before_filter :authenticate_user!</code>
+</div>
+
+<h3>Routes</h3>
+<p>Make sure your "root" route is configured in config/routes.rb</p>
+<div class="well well-sm">
+	<code>root to: "public#index"</code>
+</div>
+
+<h3>Automatic Installation (Lets assume this is a bare bones app) </h3>
+
+Run the following generator below to add the necessary configuration options to Devise's config file:
+<div class="well well-sm">
+	<code>rails g devise_google_authenticator:install</code>
+</div>
+
+After you've created your Devise user models (which is usually done with a "rails g devise MODEL"), set up your Google Authenticator additions:
+
+<div class="well well-sm">
+	<code>rails g devise_google_authenticator MODEL</code>
+</div>
+
+Don't forget to migrate if you're NOT using Mongoid as your database ORM, Mongoid installations will have appropriate fields added to the model after the command above:
+
+<div class="well well-sm">
+	<code>rake db:migrate</code>
+</div>
+
+<hr>
+<h3>Installation With Existing Users</h3>
+
+After the above steps have been performed, you'll need to generate secrets for each user:
+the below code you can run each line in the console.
+<div class="well well-sm">
+	<code>
+		User.where(:gauth_secret => nil).find_each do |user| <br>
+			&nbsp;&nbsp;&nbsp;&nbsp;user.send(:assign_auth_secret)<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;user.save!<br>
+		end
+	</code>
+</div>
+
+By default, users won't need to perform two-factor authentication (gauth_enabled='f'). By visiting /MODEL/displayqr (eg: /users/displayqr)
+and submitting the form, two-factor authentication will then be turned on (gauth_enabled=1) and required for subsequent logins.
+
+<h2>G-Auth Devise Configuration Options</h2>
+
+The install generator adds some options to the end of your Devise config file (config/initializers/devise.rb)
+<hr>
+<p>How long should the user be able to authenticate with their Google Authenticator token</p>
+<div class="well well-sm">
+	<code>config.ga_timeout = 1.minute</code>
+</div>
+
+<p>A multiplier which provides for drift between a user's clock (and therefore their OTP) and the system clock. This should be fine at 3.</p>
+<div class="well well-sm">
+	<code>config.ga_timedrift = 3</code>
+</div>
+
+<p>How long to remember the token for before requiring another. By default this is 1 month. To disable this setting change it to nil.</p>
+<p>This remebertime should be set to the same timeout time as devise session timeout time.</p>
+<div class="well well-sm">
+	<code>config.ga_remembertime = 5.minutes</code> <b>( Time set on current this app )</b>
+</div>
+
+<p>If you want to set a custom application name instead of using the name of the Rails app.</p>
+<div class="well well-sm">
+	<code>config.ga_appname = 'lvh.me'</code> <b>( Time set on current this app )</b>
+</div>
+
+<p>If you don't want to immediately forward newly registered or signed-up users to the Display QR page. If this is enabled, users will have to visit the /displayqr page to enable Google Authenticator.</p>
+<div class="well well-sm">
+	<code>config.ga_bypass_signup = false</code> <b>( Current on this app )</b>
+</div>
+
+<h2>Custom Views</h2>
+
+If you want to customise your views (which you likely will want to, as they're pretty ugly right now), you can use the generator:
+
+<div class="well well-sm">
+	<code>rails g devise_google_authenticator:views users</code>
+</div>

@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'private/index'
+
   devise_for :users
   get 'public/index'
    root to: "public#index"

@@ -15,7 +15,11 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li><%= link_to "Home", root_url %></li>
+      <% if user_signed_in? %>
+        <li><%= link_to "Private Page", private_index_path %></li>
+      <% end %>
       </ul>
+    <% if user_signed_in? %>
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account<span class="caret"></span></a>
@@ -27,6 +31,12 @@
           </ul>
         </li>
       </ul>
+    <% else %>
+        <ul class="nav navbar-nav navbar-right">
+          <li><%= link_to "Login", new_user_session_path %></li>
+          <li><%= link_to "Sign Up", new_user_registration_path %></li>
+        </ul>
+      <% end %>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
