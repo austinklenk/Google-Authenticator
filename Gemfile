@@ -27,6 +27,7 @@ gem 'devise'
 gem 'devise_google_authenticator'
 
 gem 'bootstrap-sass', '~> 3.3.6'
+gem 'forest_liana'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
