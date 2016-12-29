@@ -8,6 +8,11 @@ Things you may want to cover:
 * Ruby version
 
 * System dependencies
+  • Devise
+  • Devise Google Authenticator
+  • Bootstrap Form
+  • Bootstrap Sass
+  • Postgresql DB
 
 * Configuration
 
